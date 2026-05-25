@@ -1,11 +1,13 @@
-import { Bell, User, Wifi, Sun, Moon } from 'lucide-react';
+import { Bell, User, Wifi, Sun, Moon, Globe } from 'lucide-react';
 
 interface TopNavProps {
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
+  carbonStandard: 'euro' | 'epa';
+  onChangeStandard: (standard: 'euro' | 'epa') => void;
 }
 
-export function TopNav({ theme, onToggleTheme }: TopNavProps) {
+export function TopNav({ theme, onToggleTheme, carbonStandard, onChangeStandard }: TopNavProps) {
   return (
     <header className="h-16 bg-white/80 dark:bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-slate-200 dark:border-[#1a1a24] flex items-center justify-between px-6 transition-colors duration-300">
       <div className="flex items-center gap-4">
@@ -19,6 +21,19 @@ export function TopNav({ theme, onToggleTheme }: TopNavProps) {
       </div>
 
       <div className="flex items-center gap-4">
+        {/* Carbon Standard Selector */}
+        <div className="flex items-center gap-2 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-[#1a1a24] rounded-lg px-3 py-1.5 transition-colors duration-300">
+          <Globe className="w-4 h-4 text-[#00ff88]" />
+          <select
+            value={carbonStandard}
+            onChange={(e) => onChangeStandard(e.target.value as 'euro' | 'epa')}
+            className="bg-transparent border-none outline-none text-xs font-semibold text-slate-700 dark:text-gray-200 cursor-pointer pr-1 focus:ring-0"
+          >
+            <option value="euro" className="bg-white dark:bg-[#0a0a0f] text-slate-800 dark:text-white">Euro 6 (EU)</option>
+            <option value="epa" className="bg-white dark:bg-[#0a0a0f] text-slate-800 dark:text-white">US EPA (US)</option>
+          </select>
+        </div>
+
         {/* Theme Toggle Button */}
         <button
           onClick={onToggleTheme}

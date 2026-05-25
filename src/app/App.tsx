@@ -15,6 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 export default function App() {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [carbonStandard, setCarbonStandard] = useState<'euro' | 'epa'>('euro');
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
@@ -45,8 +46,8 @@ export default function App() {
               />
               <MetricCard
                 title="Carbon Emission"
-                value="2,840 kg"
-                change="8.7%"
+                value={carbonStandard === 'euro' ? "2,840 kg" : "5,254 kg"}
+                change={carbonStandard === 'euro' ? "8.7%" : "12.4%"}
                 trend="down"
                 icon={Leaf}
                 accentColor="#00d9ff"
@@ -61,7 +62,7 @@ export default function App() {
               />
               <MetricCard
                 title="Carbon Index"
-                value="76.4"
+                value={carbonStandard === 'euro' ? "76.4" : "141.3"}
                 change="4.2%"
                 trend="down"
                 icon={Activity}
@@ -98,7 +99,7 @@ export default function App() {
               <TabsContent value="analytics" className="mt-0">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <AIPrediction />
-                  <CarbonChart />
+                  <CarbonChart carbonStandard={carbonStandard} />
                 </div>
               </TabsContent>
             </Tabs>
@@ -126,7 +127,7 @@ export default function App() {
           <>
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Carbon Analytics</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              <CarbonChart />
+              <CarbonChart carbonStandard={carbonStandard} />
               <VehicleTypeChart />
             </div>
             <ESGInsights />
@@ -139,7 +140,7 @@ export default function App() {
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Congestion Pricing</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <CongestionPricing />
-              <CarbonChart />
+              <CarbonChart carbonStandard={carbonStandard} />
             </div>
           </>
         );
@@ -180,7 +181,12 @@ export default function App() {
       <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <TopNav theme={theme} onToggleTheme={toggleTheme} />
+        <TopNav
+          theme={theme}
+          onToggleTheme={toggleTheme}
+          carbonStandard={carbonStandard}
+          onChangeStandard={setCarbonStandard}
+        />
 
         <main className="flex-1 overflow-y-auto p-6">
           {renderContent()}
