@@ -15,7 +15,7 @@ const menuItems = [
   { id: 'carbon', icon: Activity, label: 'Carbon Analytics' },
   { id: 'ai', icon: Brain, label: 'AI Prediction' },
   { id: 'pricing', icon: DollarSign, label: 'Congestion Pricing' },
-  { id: 'iot', icon: Camera, label: 'IoT Devices' },
+  { id: 'cameras', icon: Camera, label: 'Cameras' },
   { id: 'reports', icon: FileText, label: 'Reports' },
   { id: 'settings', icon: Settings, label: 'Settings' },
 ];
@@ -66,7 +66,7 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
           <div className="w-2 h-2 rounded-full bg-[#00ff88] animate-pulse" />
           <span className="text-xs text-[#00ff88] font-semibold">System Active</span>
         </div>
-        <p className="text-xs text-gray-400">All IoT devices operational</p>
+        <p className="text-xs text-gray-400">All cameras operational</p>
       </div>
     </aside>
   );

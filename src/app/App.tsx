@@ -7,7 +7,7 @@ import { TrafficHeatmap } from './components/TrafficHeatmap';
 import { CarbonChart } from './components/CarbonChart';
 import { VehicleTypeChart } from './components/VehicleTypeChart';
 import { AIPrediction } from './components/AIPrediction';
-import { IoTDevices } from './components/IoTDevices';
+import { Cameras } from './components/Cameras';
 import { CongestionPricing } from './components/CongestionPricing';
 import { ESGInsights } from './components/ESGInsights';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
@@ -145,11 +145,11 @@ export default function App() {
           </>
         );
 
-      case 'iot':
+      case 'cameras':
         return (
           <>
-            <h2 className="text-2xl font-bold text-white mb-6">IoT Devices</h2>
-            <IoTDevices />
+            <h2 className="text-2xl font-bold text-white mb-6">Cameras</h2>
+            <Cameras />
           </>
         );
 

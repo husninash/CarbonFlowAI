@@ -9,15 +9,15 @@ const devices = [
   { id: 'ESP32-006', location: 'Park Avenue', status: 'online', vehicles: 189, uptime: '99.9%' },
 ];
 
-export function IoTDevices() {
+export function Cameras() {
   const onlineCount = devices.filter(d => d.status === 'online').length;
 
   return (
     <div className="bg-[#0f0f14] border border-[#1a1a24] rounded-xl p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-bold text-white">IoT Camera Network</h3>
-          <p className="text-sm text-gray-400 mt-1">ESP32-CAM device status</p>
+          <h3 className="text-lg font-bold text-white">Camera Network</h3>
+          <p className="text-sm text-gray-400 mt-1">ESP32-CAM status</p>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00ff88]/10 border border-[#00ff88]/30">
           <div className="w-2 h-2 rounded-full bg-[#00ff88] animate-pulse" />
