@@ -13,7 +13,6 @@ const menuItems = [
   { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { id: 'traffic', icon: Car, label: 'Traffic Monitoring' },
   { id: 'carbon', icon: Activity, label: 'Carbon Analytics' },
-  { id: 'ai', icon: Brain, label: 'AI Prediction' },
   { id: 'pricing', icon: DollarSign, label: 'Congestion Pricing' },
   { id: 'cameras', icon: Camera, label: 'Cameras' },
   { id: 'reports', icon: FileText, label: 'Reports' },

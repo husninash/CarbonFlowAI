@@ -104,8 +104,13 @@ export default function App() {
         return (
           <>
             <h2 className="text-2xl font-bold text-white mb-6">Traffic Monitoring</h2>
-            <div className="mb-6">
-              <TrafficHeatmap />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+              <div className="lg:col-span-2">
+                <TrafficHeatmap />
+              </div>
+              <div className="h-full">
+                <AIPrediction />
+              </div>
             </div>
             <VehicleTypeChart />
           </>
@@ -120,17 +125,6 @@ export default function App() {
               <VehicleTypeChart />
             </div>
             <ESGInsights />
-          </>
-        );
-
-      case 'ai':
-        return (
-          <>
-            <h2 className="text-2xl font-bold text-white mb-6">AI Prediction</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <AIPrediction />
-              <TrafficHeatmap />
-            </div>
           </>
         );
 
