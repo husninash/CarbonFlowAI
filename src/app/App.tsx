@@ -14,6 +14,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('dashboard');
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   const renderContent = () => {
     switch (activeSection) {
@@ -85,7 +90,7 @@ export default function App() {
               
               <TabsContent value="traffic" className="mt-0">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <TrafficHeatmap />
+                  <TrafficHeatmap theme={theme} />
                   <VehicleTypeChart />
                 </div>
               </TabsContent>
@@ -103,10 +108,10 @@ export default function App() {
       case 'traffic':
         return (
           <>
-            <h2 className="text-2xl font-bold text-white mb-6">Traffic Monitoring</h2>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Traffic Monitoring</h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
               <div className="lg:col-span-2">
-                <TrafficHeatmap />
+                <TrafficHeatmap theme={theme} />
               </div>
               <div className="h-full">
                 <AIPrediction />
@@ -119,7 +124,7 @@ export default function App() {
       case 'carbon':
         return (
           <>
-            <h2 className="text-2xl font-bold text-white mb-6">Carbon Analytics</h2>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Carbon Analytics</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
               <CarbonChart />
               <VehicleTypeChart />
@@ -131,7 +136,7 @@ export default function App() {
       case 'pricing':
         return (
           <>
-            <h2 className="text-2xl font-bold text-white mb-6">Congestion Pricing</h2>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Congestion Pricing</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <CongestionPricing />
               <CarbonChart />
@@ -142,26 +147,26 @@ export default function App() {
       case 'cameras':
         return (
           <>
-            <h2 className="text-2xl font-bold text-white mb-6">Cameras</h2>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Cameras</h2>
             <Cameras />
           </>
         );
 
       case 'reports':
         return (
-          <div className="bg-[#0f0f14] border border-[#1a1a24] rounded-xl p-12 text-center">
-            <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-white mb-2">Reports</h2>
-            <p className="text-gray-400">Generate and view system reports</p>
+          <div className="bg-white dark:bg-[#0f0f14] border border-slate-200 dark:border-[#1a1a24] rounded-xl p-12 text-center transition-colors duration-300">
+            <FileText className="w-16 h-16 text-slate-400 dark:text-gray-400 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Reports</h2>
+            <p className="text-slate-500 dark:text-gray-400">Generate and view system reports</p>
           </div>
         );
 
       case 'settings':
         return (
-          <div className="bg-[#0f0f14] border border-[#1a1a24] rounded-xl p-12 text-center">
-            <Settings className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-white mb-2">Settings</h2>
-            <p className="text-gray-400">Configure system preferences</p>
+          <div className="bg-white dark:bg-[#0f0f14] border border-slate-200 dark:border-[#1a1a24] rounded-xl p-12 text-center transition-colors duration-300">
+            <Settings className="w-16 h-16 text-slate-400 dark:text-gray-400 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Settings</h2>
+            <p className="text-slate-500 dark:text-gray-400">Configure system preferences</p>
           </div>
         );
 
@@ -171,11 +176,11 @@ export default function App() {
   };
 
   return (
-    <div className="size-full flex bg-[#0a0a0f] dark">
+    <div className={`size-full flex transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0f] dark text-white' : 'bg-[#f8fafc] text-slate-900'}`}>
       <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <TopNav />
+        <TopNav theme={theme} onToggleTheme={toggleTheme} />
 
         <main className="flex-1 overflow-y-auto p-6">
           {renderContent()}
