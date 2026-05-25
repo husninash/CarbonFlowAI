@@ -1,6 +1,7 @@
-import { MapPin, AlertTriangle, Cpu, Globe } from 'lucide-react';
-import { MapContainer, TileLayer, CircleMarker, Tooltip, Polyline } from 'react-leaflet';
+import { MapPin, AlertTriangle, Cpu, Globe, Crosshair } from 'lucide-react';
+import { MapContainer, TileLayer, CircleMarker, Tooltip, Polyline, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import { useState, useEffect } from 'react';
 
 const trafficZones = [
   { id: 1, name: 'Sudirman Business District', level: 'high', vehicles: 847, lat: -6.2250, lng: 106.8040 },
@@ -54,64 +55,143 @@ const simulatedRoads = [
   }
 ];
 
-export function TrafficHeatmap() {
-  const center: [number, number] = [-6.21, 106.82]; // Jakarta center
+// Component to dynamically pan and zoom the map
+function ChangeView({ center, zoom }: { center: [number, number]; zoom: number }) {
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo(center, zoom, { duration: 1.5 });
+  }, [center, zoom, map]);
+  return null;
+}
+
+export function TrafficHeatmap({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
+  const defaultCenter: [number, number] = [-6.21, 106.82]; // Jakarta center
+  const [mapCenter, setMapCenter] = useState<[number, number]>(defaultCenter);
+  const [mapZoom, setMapZoom] = useState<number>(13);
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+  const [isLocating, setIsLocating] = useState<boolean>(false);
+
   const tomtomKey = import.meta.env.VITE_TOMTOM_API_KEY;
   const hasTomTomKey = tomtomKey && tomtomKey !== 'YOUR_TOMTOM_API_KEY';
 
+  const handleLocateUser = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const newCoords: [number, number] = [latitude, longitude];
+        setUserLocation(newCoords);
+        setMapCenter(newCoords);
+        setMapZoom(15);
+        setIsLocating(false);
+      },
+      (error) => {
+        console.error("Error getting location: ", error);
+        setIsLocating(false);
+        alert("Unable to retrieve your location. Please check browser permissions.");
+      },
+      { enableHighAccuracy: true, timeout: 8000 }
+    );
+  };
+
   return (
-    <div className="bg-[#0f0f14] border border-[#1a1a24] rounded-xl p-6 flex flex-col h-full">
+    <div className="bg-white dark:bg-[#0f0f14] border border-slate-200 dark:border-[#1a1a24] rounded-xl p-6 flex flex-col h-full transition-colors duration-300">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-          <h3 className="text-lg font-bold text-white">Real-Time Traffic Heatmap</h3>
-          <p className="text-sm text-gray-400 mt-1">Live congestion monitoring across city zones</p>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">Real-Time Traffic Heatmap</h3>
+          <p className="text-sm text-slate-500 dark:text-gray-400 mt-1">Live congestion monitoring across city zones</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1.5 text-xs">
               <div className="w-2.5 h-2.5 rounded-full bg-[#00ff88]" />
-              <span className="text-gray-400">Low</span>
+              <span className="text-slate-500 dark:text-gray-400">Low</span>
             </div>
             <div className="flex items-center gap-1.5 text-xs">
               <div className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
-              <span className="text-gray-400">Medium</span>
+              <span className="text-slate-500 dark:text-gray-400">Medium</span>
             </div>
             <div className="flex items-center gap-1.5 text-xs">
               <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
-              <span className="text-gray-400">High</span>
+              <span className="text-slate-500 dark:text-gray-400">High</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* API Connection Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 bg-[#0a0a0f] border border-[#1a1a24] p-3 rounded-lg">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 bg-slate-50 dark:bg-[#0a0a0f] border border-slate-200 dark:border-[#1a1a24] p-3 rounded-lg transition-colors duration-300">
         <div className="flex items-center gap-2">
           {hasTomTomKey ? (
             <Globe className="w-4 h-4 text-[#00ff88] animate-pulse" />
           ) : (
             <Cpu className="w-4 h-4 text-[#00d9ff]" />
           )}
-          <span className="text-xs font-semibold text-white">
+          <span className="text-xs font-semibold text-slate-900 dark:text-white">
             {hasTomTomKey ? 'Live TomTom Real-Time Traffic Layer Active' : 'High-Fidelity Traffic Simulation'}
           </span>
         </div>
-        <span className="text-[10px] text-gray-400">
+        <span className="text-[10px] text-slate-500 dark:text-gray-400">
           {hasTomTomKey ? 'Live API data stream' : 'Add VITE_TOMTOM_API_KEY in .env for live road lines'}
         </span>
       </div>
 
-      <div className="relative w-full h-[400px] rounded-lg overflow-hidden border border-[#1a1a24] z-0">
+      <div className="relative w-full h-[400px] rounded-lg overflow-hidden border border-slate-200 dark:border-[#1a1a24] z-0 transition-colors duration-300">
         <MapContainer 
-          center={center} 
-          zoom={13} 
+          center={mapCenter} 
+          zoom={mapZoom} 
           scrollWheelZoom={true} 
-          style={{ height: '100%', width: '100%', backgroundColor: '#0a0a0f' }}
+          style={{ height: '100%', width: '100%', backgroundColor: theme === 'dark' ? '#0a0a0f' : '#f1f5f9' }}
         >
+          {/* Dynamic map styling based on theme */}
           <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            url={theme === 'dark' 
+              ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+              : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+            }
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           />
+          
+          {/* Dynamically fly to coordinates */}
+          <ChangeView center={mapCenter} zoom={mapZoom} />
+
+          {/* User Geolocation Pulse Markers */}
+          {userLocation && (
+            <>
+              {/* Outer pulsing ring */}
+              <CircleMarker
+                center={userLocation}
+                radius={16}
+                pathOptions={{
+                  color: '#00d9ff',
+                  fillColor: '#00d9ff',
+                  fillOpacity: 0.15,
+                  weight: 1,
+                  className: 'animate-pulse'
+                }}
+              />
+              {/* Core location circle */}
+              <CircleMarker
+                center={userLocation}
+                radius={7}
+                pathOptions={{
+                  color: '#ffffff',
+                  fillColor: '#00d9ff',
+                  fillOpacity: 0.9,
+                  weight: 2
+                }}
+              >
+                <Tooltip direction="top" offset={[0, -5]} opacity={1} permanent className="font-bold">
+                  <div className="px-1 text-[10px] text-slate-900 font-bold">You Are Here</div>
+                </Tooltip>
+              </CircleMarker>
+            </>
+          )}
           
           {hasTomTomKey ? (
             <TileLayer
@@ -128,7 +208,7 @@ export function TrafficHeatmap() {
                   pathOptions={{
                     color: road.color,
                     weight: 10,
-                    opacity: 0.2,
+                    opacity: theme === 'dark' ? 0.2 : 0.1,
                     lineCap: 'round',
                     lineJoin: 'round'
                   }}
@@ -184,19 +264,29 @@ export function TrafficHeatmap() {
             );
           })}
         </MapContainer>
+
+        {/* Locate Me Floating Button overlay */}
+        <button
+          onClick={handleLocateUser}
+          disabled={isLocating}
+          className="absolute bottom-4 right-4 z-[400] p-3 bg-white dark:bg-[#0a0a0f] border border-slate-200 dark:border-[#1a1a24] hover:bg-slate-100 dark:hover:bg-white/5 rounded-full shadow-lg text-slate-700 dark:text-white transition-all hover:scale-105 active:scale-95 flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:scale-100"
+          title="Locate My Position"
+        >
+          <Crosshair className={`w-5 h-5 text-[#00d9ff] ${isLocating ? 'animate-spin' : ''}`} />
+        </button>
       </div>
 
       <div className="grid grid-cols-3 gap-4 mt-6">
-        <div className="bg-[#0a0a0f] rounded-lg p-3 border border-[#1a1a24]">
-          <div className="text-xs text-gray-400 mb-1">High Congestion</div>
-          <div className="text-xl font-bold text-red-400">2 Zones</div>
+        <div className="bg-slate-50 dark:bg-[#0a0a0f] rounded-lg p-3 border border-slate-200 dark:border-[#1a1a24] transition-colors duration-300">
+          <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">High Congestion</div>
+          <div className="text-xl font-bold text-red-600 dark:text-red-400">2 Zones</div>
         </div>
-        <div className="bg-[#0a0a0f] rounded-lg p-3 border border-[#1a1a24]">
-          <div className="text-xs text-gray-400 mb-1">Medium Traffic</div>
-          <div className="text-xl font-bold text-yellow-400">2 Zones</div>
+        <div className="bg-slate-50 dark:bg-[#0a0a0f] rounded-lg p-3 border border-slate-200 dark:border-[#1a1a24] transition-colors duration-300">
+          <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">Medium Traffic</div>
+          <div className="text-xl font-bold text-yellow-600 dark:text-yellow-400">2 Zones</div>
         </div>
-        <div className="bg-[#0a0a0f] rounded-lg p-3 border border-[#1a1a24]">
-          <div className="text-xs text-gray-400 mb-1">Low Traffic</div>
+        <div className="bg-slate-50 dark:bg-[#0a0a0f] rounded-lg p-3 border border-slate-200 dark:border-[#1a1a24] transition-colors duration-300">
+          <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">Low Traffic</div>
           <div className="text-xl font-bold text-[#00ff88]">1 Zone</div>
         </div>
       </div>
