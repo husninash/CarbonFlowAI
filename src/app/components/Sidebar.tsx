@@ -9,23 +9,27 @@ import {
   Settings
 } from 'lucide-react';
 import logo from '../../assets/logo.png';
-
-const menuItems = [
-  { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { id: 'traffic', icon: Car, label: 'Traffic Monitoring' },
-  { id: 'carbon', icon: Activity, label: 'Carbon Analytics' },
-  { id: 'pricing', icon: DollarSign, label: 'Congestion Pricing' },
-  { id: 'cameras', icon: Camera, label: 'Cameras' },
-  { id: 'reports', icon: FileText, label: 'Reports' },
-  { id: 'settings', icon: Settings, label: 'Settings' },
-];
+import { translations, Language } from '../utils/translations';
 
 interface SidebarProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
+  language?: Language;
 }
 
-export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
+export function Sidebar({ activeSection, onSectionChange, language = 'id' }: SidebarProps) {
+  const t = translations[language];
+
+  const menuItems = [
+    { id: 'dashboard', icon: LayoutDashboard, label: t.dashboard },
+    { id: 'traffic', icon: Car, label: t.trafficMonitoring },
+    { id: 'carbon', icon: Activity, label: t.carbonAnalytics },
+    { id: 'pricing', icon: DollarSign, label: t.congestionPricing },
+    { id: 'cameras', icon: Camera, label: t.cameras },
+    { id: 'reports', icon: FileText, label: t.reports },
+    { id: 'settings', icon: Settings, label: t.settings },
+  ];
+
   return (
     <aside className="w-64 bg-white dark:bg-[#0a0a0f] border-r border-slate-200 dark:border-[#1a1a24] flex flex-col transition-colors duration-300">
       <div className="p-6">
@@ -64,9 +68,9 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
       <div className="p-4 m-3 rounded-lg bg-slate-50 dark:bg-gradient-to-br dark:from-[#00ff88]/10 dark:to-[#00d9ff]/10 border border-slate-200 dark:border-[#00ff88]/20 transition-colors duration-300">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-2 h-2 rounded-full bg-[#00ff88] animate-pulse" />
-          <span className="text-xs text-[#00ff88] font-semibold">System Active</span>
+          <span className="text-xs text-[#00ff88] font-semibold">{t.systemActive}</span>
         </div>
-        <p className="text-xs text-slate-500 dark:text-gray-400">All cameras operational</p>
+        <p className="text-xs text-slate-500 dark:text-gray-400">{t.allCamerasOperational}</p>
       </div>
     </aside>
   );

@@ -1,13 +1,22 @@
 import { DollarSign, Car, Truck, Leaf, TrendingUp } from 'lucide-react';
+import { translations, Language, Currency } from '../utils/translations';
 
-const pricingTiers = [
-  { category: 'Electric Vehicles', icon: Leaf, price: '$0.00', discount: '100%', color: '#00ff88' },
-  { category: 'Hybrid Vehicles', icon: Car, price: '$2.50', discount: '50%', color: '#00d9ff' },
-  { category: 'Standard Cars', icon: Car, price: '$5.00', discount: '0%', color: '#8b5cf6' },
-  { category: 'Heavy Trucks', icon: Truck, price: '$12.00', discount: '0%', color: '#f59e0b' },
-];
+interface CongestionPricingProps {
+  language?: Language;
+  currency?: Currency;
+}
 
-export function CongestionPricing() {
+export function CongestionPricing({ language = 'id', currency = 'IDR' }: CongestionPricingProps) {
+  const t = translations[language];
+  const isIDR = currency === 'IDR';
+
+  const pricingTiers = [
+    { category: t.electricVehicles, icon: Leaf, price: isIDR ? 'Rp 0' : '$0.00', discount: '100%', color: '#00ff88' },
+    { category: t.hybridVehicles, icon: Car, price: isIDR ? 'Rp 35.000' : '$2.50', discount: '50%', color: '#00d9ff' },
+    { category: t.standardCars, icon: Car, price: isIDR ? 'Rp 75.000' : '$5.00', discount: '0%', color: '#8b5cf6' },
+    { category: t.heavyTrucks, icon: Truck, price: isIDR ? 'Rp 180.000' : '$12.00', discount: '0%', color: '#f59e0b' },
+  ];
+
   return (
     <div className="bg-white dark:bg-[#0f0f14] border border-slate-200 dark:border-[#1a1a24] rounded-xl p-6 shadow-sm dark:shadow-none transition-colors duration-300">
       <div className="flex items-center gap-3 mb-6">
@@ -15,22 +24,22 @@ export function CongestionPricing() {
           <DollarSign className="w-6 h-6 text-[#f59e0b]" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white">Dynamic Pricing</h3>
-          <p className="text-sm text-slate-500 dark:text-gray-400">Real-time congestion toll rates</p>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">{t.dynamicPricing}</h3>
+          <p className="text-sm text-slate-500 dark:text-gray-400">{t.realtimeCongestionToll}</p>
         </div>
       </div>
 
       <div className="bg-slate-50 dark:bg-gradient-to-r dark:from-[#00ff88]/10 dark:to-[#00d9ff]/10 border border-slate-200 dark:border-[#00ff88]/20 rounded-lg p-4 mb-6 transition-colors duration-300">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">Current Multiplier</div>
+            <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">{t.currentMultiplier}</div>
             <div className="text-2xl font-bold text-slate-900 dark:text-white">1.5x</div>
           </div>
           <div className="text-right">
-            <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">Peak Hours Active</div>
+            <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">{t.peakHoursActive}</div>
             <div className="flex items-center gap-1 text-sm font-semibold text-[#f59e0b]">
               <TrendingUp className="w-4 h-4" />
-              High Demand
+              {t.highDemand}
             </div>
           </div>
         </div>
@@ -56,15 +65,15 @@ export function CongestionPricing() {
                     <div className="text-sm font-semibold text-slate-900 dark:text-white">{tier.category}</div>
                     <div className="text-xs text-slate-500 dark:text-gray-400 mt-0.5">
                       {tier.discount !== '0%' && (
-                        <span className="text-[#00ff88] font-semibold">{tier.discount} Green Discount</span>
+                        <span className="text-[#00ff88] font-semibold">{tier.discount} {t.greenDiscount}</span>
                       )}
-                      {tier.discount === '0%' && <span>Standard rate</span>}
+                      {tier.discount === '0%' && <span>{t.standardRate}</span>}
                     </div>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-xl font-bold text-slate-900 dark:text-white">{tier.price}</div>
-                  <div className="text-xs text-slate-500 dark:text-gray-400">per entry</div>
+                  <div className="text-xs text-slate-500 dark:text-gray-400">{t.perEntry}</div>
                 </div>
               </div>
             </div>
@@ -75,15 +84,15 @@ export function CongestionPricing() {
       <div className="mt-6 pt-4 border-t border-slate-200 dark:border-[#1a1a24]">
         <div className="grid grid-cols-3 gap-3">
           <div className="text-center">
-            <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">Revenue Today</div>
-            <div className="text-sm font-bold text-[#00ff88]">$34,580</div>
+            <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">{t.revenueToday}</div>
+            <div className="text-sm font-bold text-[#00ff88]">{isIDR ? "Rp 518,7 Jt" : "$34,580"}</div>
           </div>
           <div className="text-center">
-            <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">Green Vehicles</div>
+            <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">{t.greenVehicles}</div>
             <div className="text-sm font-bold text-[#00d9ff]">23.4%</div>
           </div>
           <div className="text-center">
-            <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">Saved Carbon</div>
+            <div className="text-xs text-slate-500 dark:text-gray-400 mb-1">{t.savedCarbon}</div>
             <div className="text-sm font-bold text-[#8b5cf6]">847 kg</div>
           </div>
         </div>
