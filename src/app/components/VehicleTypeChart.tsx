@@ -9,9 +9,9 @@ const data = [
 
 export function VehicleTypeChart() {
   return (
-    <div className="bg-[#0f0f14] border border-[#1a1a24] rounded-xl p-6">
-      <h3 className="text-lg font-bold text-white mb-2">Vehicle Distribution</h3>
-      <p className="text-sm text-gray-400 mb-6">Detected vehicles by type (today)</p>
+    <div className="bg-white dark:bg-[#0f0f14] border border-slate-200 dark:border-[#1a1a24] rounded-xl p-6 shadow-sm dark:shadow-none transition-colors duration-300">
+      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Vehicle Distribution</h3>
+      <p className="text-sm text-slate-500 dark:text-gray-400 mb-6">Detected vehicles by type (today)</p>
 
       <ResponsiveContainer width="100%" height={250}>
         <PieChart>
@@ -30,10 +30,10 @@ export function VehicleTypeChart() {
           </Pie>
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0a0a0f',
-              border: '1px solid #1a1a24',
+              backgroundColor: 'var(--card)',
+              border: '1px solid var(--border)',
               borderRadius: '8px',
-              color: '#fff',
+              color: 'var(--foreground)',
             }}
           />
         </PieChart>
@@ -41,12 +41,12 @@ export function VehicleTypeChart() {
 
       <div className="grid grid-cols-2 gap-3 mt-4">
         {data.map((item) => (
-          <div key={item.name} className="flex items-center justify-between bg-[#0a0a0f] rounded-lg p-3 border border-[#1a1a24]">
+          <div key={item.name} className="flex items-center justify-between bg-slate-50 dark:bg-[#0a0a0f] rounded-lg p-3 border border-slate-200 dark:border-[#1a1a24] transition-colors duration-300">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-              <span className="text-sm text-gray-400">{item.name}</span>
+              <span className="text-sm text-slate-500 dark:text-gray-400">{item.name}</span>
             </div>
-            <span className="text-sm font-bold text-white">{item.value.toLocaleString()}</span>
+            <span className="text-sm font-bold text-slate-900 dark:text-white">{item.value.toLocaleString()}</span>
           </div>
         ))}
       </div>

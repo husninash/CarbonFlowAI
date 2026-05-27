@@ -8,6 +8,7 @@ import {
   FileText,
   Settings
 } from 'lucide-react';
+import logo from '../../assets/logo.png';
 
 const menuItems = [
   { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -26,15 +27,15 @@ interface SidebarProps {
 
 export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
   return (
-    <aside className="w-64 bg-[#0a0a0f] border-r border-[#1a1a24] flex flex-col">
+    <aside className="w-64 bg-white dark:bg-[#0a0a0f] border-r border-slate-200 dark:border-[#1a1a24] flex flex-col transition-colors duration-300">
       <div className="p-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#00ff88] to-[#00d9ff] flex items-center justify-center">
-            <Activity className="w-6 h-6 text-[#0a0a0f]" />
+          <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-[#0f0f14] border border-slate-200 dark:border-[#1a1a24] flex items-center justify-center overflow-hidden shadow-lg shadow-black/5 dark:shadow-black/40 transition-colors duration-300">
+            <img src={logo} alt="Emiora Logo" className="w-[110%] h-[110%] max-w-none object-cover transform hover:scale-110 transition-transform duration-300" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-white">CarbonFlow AI</h1>
-            <p className="text-xs text-[#00ff88]">Smart City Platform</p>
+            <h1 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">Emiora</h1>
+            <p className="text-xs text-[#00ff88] font-semibold tracking-wide uppercase">Smart City</p>
           </div>
         </div>
       </div>
@@ -50,7 +51,7 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                 isActive
                   ? 'bg-gradient-to-r from-[#00ff88]/10 to-[#00d9ff]/10 text-[#00ff88] border border-[#00ff88]/20'
-                  : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                  : 'text-slate-500 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               <Icon className="w-5 h-5" />
@@ -60,12 +61,12 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
         })}
       </nav>
 
-      <div className="p-4 m-3 rounded-lg bg-gradient-to-br from-[#00ff88]/10 to-[#00d9ff]/10 border border-[#00ff88]/20">
+      <div className="p-4 m-3 rounded-lg bg-slate-50 dark:bg-gradient-to-br dark:from-[#00ff88]/10 dark:to-[#00d9ff]/10 border border-slate-200 dark:border-[#00ff88]/20 transition-colors duration-300">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-2 h-2 rounded-full bg-[#00ff88] animate-pulse" />
           <span className="text-xs text-[#00ff88] font-semibold">System Active</span>
         </div>
-        <p className="text-xs text-gray-400">All cameras operational</p>
+        <p className="text-xs text-slate-500 dark:text-gray-400">All cameras operational</p>
       </div>
     </aside>
   );

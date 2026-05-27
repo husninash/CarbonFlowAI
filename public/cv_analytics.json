@@ -1,0 +1,15 @@
+{
+  "status": "active",
+  "timestamp": 1779706764.412686,
+  "totals": {
+    "Car": 4,
+    "Bus": 1,
+    "Truck": 4,
+    "Motorcycle": 0,
+    "Total": 9
+  },
+  "carbon_emissions_kg": 4.56,
+  "congestion_index": "High",
+  "active_vehicles_count": 9,
+  "fps": 229.0
+}

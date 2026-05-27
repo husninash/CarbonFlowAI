@@ -11,7 +11,7 @@ interface MetricCardProps {
 
 export function MetricCard({ title, value, change, trend, icon: Icon, accentColor = '#00ff88' }: MetricCardProps) {
   return (
-    <div className="bg-[#0f0f14] border border-[#1a1a24] rounded-xl p-6 hover:border-[#00ff88]/30 transition-all group">
+    <div className="bg-white dark:bg-[#0f0f14] border border-slate-200 dark:border-[#1a1a24] rounded-xl p-6 shadow-sm dark:shadow-none hover:border-[#00ff88]/30 dark:hover:border-[#00ff88]/30 transition-all group">
       <div className="flex items-start justify-between mb-4">
         <div
           className="w-12 h-12 rounded-lg flex items-center justify-center"
@@ -31,8 +31,8 @@ export function MetricCard({ title, value, change, trend, icon: Icon, accentColo
         )}
       </div>
       <div className="space-y-1">
-        <div className="text-3xl font-bold text-white">{value}</div>
-        <div className="text-sm text-gray-400">{title}</div>
+        <div className="text-3xl font-bold text-slate-900 dark:text-white">{value}</div>
+        <div className="text-sm text-slate-500 dark:text-gray-400">{title}</div>
       </div>
     </div>
   );

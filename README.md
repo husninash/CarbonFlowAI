@@ -1,7 +1,7 @@
 
-  # CarbonFlow AI Dashboard Design
+  # Emiora AI Dashboard Design
 
-  This is a code bundle for CarbonFlow AI Dashboard Design. The original project is available at https://www.figma.com/design/L680gegswTJUKvMCnRGiHH/CarbonFlow-AI-Dashboard-Design.
+  This is a code bundle for Emiora AI Dashboard Design. The original project is available at https://www.figma.com/design/L680gegswTJUKvMCnRGiHH/CarbonFlow-AI-Dashboard-Design.
 
   ## Running the code
 
