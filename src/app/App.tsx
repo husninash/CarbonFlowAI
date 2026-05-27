@@ -9,6 +9,7 @@ import { VehicleTypeChart } from './components/VehicleTypeChart';
 import { AIPrediction } from './components/AIPrediction';
 import { Cameras } from './components/Cameras';
 import { CongestionPricing } from './components/CongestionPricing';
+import { Reports } from './components/Reports';
 import { ESGInsights } from './components/ESGInsights';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { translations, Language, Currency } from './utils/translations';
@@ -160,11 +161,7 @@ export default function App() {
 
       case 'reports':
         return (
-          <div className="bg-white dark:bg-[#0f0f14] border border-slate-200 dark:border-[#1a1a24] rounded-xl p-12 text-center transition-colors duration-300">
-            <FileText className="w-16 h-16 text-slate-400 dark:text-gray-400 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{t.reports}</h2>
-            <p className="text-slate-500 dark:text-gray-400">Generate and view system reports</p>
-          </div>
+          <Reports language={language} currency={currency} />
         );
 
       case 'settings':
