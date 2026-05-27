@@ -1,15 +1,38 @@
 import { MapPin, AlertTriangle, Cpu, Globe, Crosshair } from 'lucide-react';
-import { MapContainer, TileLayer, CircleMarker, Tooltip, Polyline, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Tooltip, Polyline, useMap, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useState, useEffect } from 'react';
+import L from 'leaflet';
 
 const trafficZones = [
-  { id: 1, name: 'Jl. MH. Thamrin (Aeon Mall)', level: 'high', vehicles: 847, lat: -6.5714, lng: 106.8812 },
-  { id: 2, name: 'Jl. Sentul Boulevard', level: 'medium', vehicles: 432, lat: -6.5645, lng: 106.8725 },
-  { id: 3, name: 'Taman Budaya Sentul City', level: 'low', vehicles: 156, lat: -6.5861, lng: 106.8943 },
-  { id: 4, name: 'Jl. Jungleland Boulevard', level: 'high', vehicles: 923, lat: -6.5818, lng: 106.9135 },
-  { id: 5, name: 'Jl. Siliwangi (Golf Club)', level: 'medium', vehicles: 534, lat: -6.5925, lng: 106.8920 },
+  { id: 1, name: 'Camera 01 (CV Main)', location: 'Jl. MH. Thamrin (Aeon Mall)', level: 'high', vehicles: 847, lat: -6.5714, lng: 106.8812, status: 'online' },
+  { id: 2, name: 'Camera 02', location: 'Jl. Sentul Boulevard', level: 'medium', vehicles: 432, lat: -6.5645, lng: 106.8725, status: 'online' },
+  { id: 3, name: 'Camera 03', location: 'Jl. Jungleland Boulevard', level: 'high', vehicles: 678, lat: -6.5818, lng: 106.9135, status: 'online' },
+  { id: 4, name: 'Camera 04', location: 'Jl. Siliwangi (Golf Club)', level: 'medium', vehicles: 534, lat: -6.5925, lng: 106.8920, status: 'offline' },
+  { id: 5, name: 'Camera 05', location: 'Bundaran Sentul', level: 'low', vehicles: 345, lat: -6.5861, lng: 106.8943, status: 'online' },
 ];
+
+// Custom sleek Camera pin icon for high-end aesthetic
+const cameraIcon = (level: string, status: string) => {
+  const isOnline = status === 'online';
+  const colorClass = !isOnline 
+    ? 'bg-slate-400 dark:bg-slate-600 shadow-slate-500/30' 
+    : level === 'high' 
+      ? 'bg-red-500 shadow-red-500/50' 
+      : level === 'medium' 
+        ? 'bg-yellow-500 shadow-yellow-500/50' 
+        : 'bg-[#00ff88] shadow-[#00ff88]/50';
+  
+  return L.divIcon({
+    html: `<div class="relative flex items-center justify-center w-8 h-8 rounded-full border-2 border-white dark:border-[#0a0a0f] text-white shadow-lg ${colorClass} transition-all hover:scale-110">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+      ${isOnline ? `<span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border border-white dark:border-[#0a0a0f] ${level === 'high' ? 'bg-red-300 animate-ping' : level === 'medium' ? 'bg-yellow-300 animate-pulse' : 'bg-green-300 animate-ping'}"></span>` : ''}
+    </div>`,
+    className: 'custom-camera-icon-wrapper',
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+  });
+};
 
 // High-fidelity simulated roads of main avenues in Sentul City
 const simulatedRoads = [
@@ -101,6 +124,12 @@ export function TrafficHeatmap({ theme = 'dark' }: { theme?: 'light' | 'dark' })
 
   return (
     <div className="bg-white dark:bg-[#0f0f14] border border-slate-200 dark:border-[#1a1a24] rounded-xl p-6 flex flex-col h-full transition-colors duration-300">
+      <style>{`
+        .custom-camera-icon-wrapper {
+          background: transparent !important;
+          border: none !important;
+        }
+      `}</style>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white">Real-Time Traffic Heatmap</h3>
@@ -238,29 +267,35 @@ export function TrafficHeatmap({ theme = 'dark' }: { theme?: 'light' | 'dark' })
           )}
           
           {trafficZones.map((zone) => {
-            const color = zone.level === 'high' ? '#ef4444' : zone.level === 'medium' ? '#eab308' : '#00ff88';
-            const radius = zone.level === 'high' ? 20 : zone.level === 'medium' ? 15 : 10;
+            const color = !zone.status || zone.status === 'offline' 
+              ? '#94a3b8' 
+              : zone.level === 'high' 
+                ? '#ef4444' 
+                : zone.level === 'medium' 
+                  ? '#eab308' 
+                  : '#00ff88';
             
             return (
-              <CircleMarker
+              <Marker
                 key={zone.id}
-                center={[zone.lat, zone.lng]}
-                radius={radius}
-                pathOptions={{ 
-                  color: color,
-                  fillColor: color,
-                  fillOpacity: 0.6,
-                  weight: 2
-                }}
+                position={[zone.lat, zone.lng]}
+                icon={cameraIcon(zone.level, zone.status || 'online')}
               >
-                <Tooltip direction="top" offset={[0, -10]} opacity={1} className="custom-leaflet-tooltip">
+                <Tooltip direction="top" offset={[0, -15]} opacity={1} className="custom-leaflet-tooltip font-sans">
                   <div className="p-1">
                     <div className="text-sm font-semibold text-gray-900 mb-1">{zone.name}</div>
-                    <div className="text-xs text-gray-700">Vehicles: <span className="font-semibold">{zone.vehicles}</span></div>
-                    <div className="text-xs text-gray-700">Status: <span className="font-semibold" style={{ color }}>{zone.level.toUpperCase()}</span></div>
+                    <div className="text-xs text-gray-700">Location: <span className="font-semibold">{zone.location}</span></div>
+                    {zone.status === 'online' ? (
+                      <>
+                        <div className="text-xs text-gray-700">Vehicles: <span className="font-semibold">{zone.vehicles}</span></div>
+                        <div className="text-xs text-gray-700">Traffic: <span className="font-semibold" style={{ color }}>{zone.level.toUpperCase()}</span></div>
+                      </>
+                    ) : (
+                      <div className="text-xs text-red-500 font-bold mt-1">DEVICE OFFLINE</div>
+                    )}
                   </div>
                 </Tooltip>
-              </CircleMarker>
+              </Marker>
             );
           })}
         </MapContainer>
