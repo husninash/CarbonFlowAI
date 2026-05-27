@@ -4,53 +4,53 @@ import 'leaflet/dist/leaflet.css';
 import { useState, useEffect } from 'react';
 
 const trafficZones = [
-  { id: 1, name: 'Sudirman Business District', level: 'high', vehicles: 847, lat: -6.2250, lng: 106.8040 },
-  { id: 2, name: 'Thamrin Center', level: 'medium', vehicles: 432, lat: -6.1950, lng: 106.8220 },
-  { id: 3, name: 'Menteng Residential', level: 'low', vehicles: 156, lat: -6.1950, lng: 106.8350 },
-  { id: 4, name: 'Gatot Subroto Highway', level: 'high', vehicles: 923, lat: -6.2400, lng: 106.8300 },
-  { id: 5, name: 'Grand Indonesia Area', level: 'medium', vehicles: 534, lat: -6.1950, lng: 106.8200 },
+  { id: 1, name: 'Jl. MH. Thamrin (Aeon Mall)', level: 'high', vehicles: 847, lat: -6.5714, lng: 106.8812 },
+  { id: 2, name: 'Jl. Sentul Boulevard', level: 'medium', vehicles: 432, lat: -6.5645, lng: 106.8725 },
+  { id: 3, name: 'Taman Budaya Sentul City', level: 'low', vehicles: 156, lat: -6.5861, lng: 106.8943 },
+  { id: 4, name: 'Jl. Jungleland Boulevard', level: 'high', vehicles: 923, lat: -6.5818, lng: 106.9135 },
+  { id: 5, name: 'Jl. Siliwangi (Golf Club)', level: 'medium', vehicles: 534, lat: -6.5925, lng: 106.8920 },
 ];
 
-// High-fidelity simulated roads of main avenues in Jakarta
+// High-fidelity simulated roads of main avenues in Sentul City
 const simulatedRoads = [
   {
-    name: "Jalan Jenderal Sudirman",
+    name: "Jl. MH. Thamrin Sentul",
     level: "high",
     color: "#ef4444",
     path: [
-      [-6.2250, 106.8040] as [number, number],
-      [-6.2115, 106.8166] as [number, number],
-      [-6.1950, 106.8220] as [number, number]
+      [-6.5714, 106.8812] as [number, number],
+      [-6.5645, 106.8725] as [number, number],
+      [-6.5540, 106.8622] as [number, number]
     ]
   },
   {
-    name: "Jalan M.H. Thamrin",
+    name: "Jl. Sentul Boulevard",
     level: "medium",
     color: "#eab308",
     path: [
-      [-6.1950, 106.8220] as [number, number],
-      [-6.1850, 106.8235] as [number, number],
-      [-6.1750, 106.8270] as [number, number]
+      [-6.5645, 106.8725] as [number, number],
+      [-6.5772, 106.8837] as [number, number],
+      [-6.5861, 106.8943] as [number, number]
     ]
   },
   {
-    name: "Jalan Gatot Subroto",
+    name: "Jl. Jungleland Boulevard",
     level: "high",
     color: "#ef4444",
     path: [
-      [-6.2115, 106.8166] as [number, number],
-      [-6.2300, 106.8240] as [number, number],
-      [-6.2400, 106.8300] as [number, number]
+      [-6.5772, 106.8837] as [number, number],
+      [-6.5818, 106.9135] as [number, number],
+      [-6.5850, 106.9200] as [number, number]
     ]
   },
   {
-    name: "Jalan Rasuna Said",
+    name: "Jl. Siliwangi",
     level: "medium",
     color: "#eab308",
     path: [
-      [-6.2000, 106.8300] as [number, number],
-      [-6.2150, 106.8315] as [number, number],
-      [-6.2300, 106.8330] as [number, number]
+      [-6.5861, 106.8943] as [number, number],
+      [-6.5925, 106.8920] as [number, number],
+      [-6.6000, 106.8900] as [number, number]
     ]
   }
 ];
@@ -65,9 +65,9 @@ function ChangeView({ center, zoom }: { center: [number, number]; zoom: number }
 }
 
 export function TrafficHeatmap({ theme = 'dark' }: { theme?: 'light' | 'dark' }) {
-  const defaultCenter: [number, number] = [-6.21, 106.82]; // Jakarta center
+  const defaultCenter: [number, number] = [-6.5772, 106.8837]; // Sentul City center
   const [mapCenter, setMapCenter] = useState<[number, number]>(defaultCenter);
-  const [mapZoom, setMapZoom] = useState<number>(13);
+  const [mapZoom, setMapZoom] = useState<number>(14);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [isLocating, setIsLocating] = useState<boolean>(false);
 
