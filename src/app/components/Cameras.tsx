@@ -17,12 +17,12 @@ interface CVData {
 }
 
 const initialDevices = [
-  { id: 'ESP32-001 (CV Main)', location: 'Main St & 5th Ave', status: 'online', vehicles: 0, uptime: '99.8%' },
-  { id: 'ESP32-002', location: 'Downtown Core', status: 'online', vehicles: 456, uptime: '99.2%' },
-  { id: 'ESP32-003', location: 'Highway Junction', status: 'online', vehicles: 678, uptime: '98.9%' },
-  { id: 'ESP32-004', location: 'Business District', status: 'offline', vehicles: 0, uptime: '95.4%' },
-  { id: 'ESP32-005', location: 'Shopping Area', status: 'online', vehicles: 345, uptime: '99.5%' },
-  { id: 'ESP32-006', location: 'Park Avenue', status: 'online', vehicles: 189, uptime: '99.9%' },
+  { id: 'Camera 01 (CV Main)', location: 'Main St & 5th Ave', status: 'online', vehicles: 0, uptime: '99.8%' },
+  { id: 'Camera 02', location: 'Downtown Core', status: 'online', vehicles: 456, uptime: '99.2%' },
+  { id: 'Camera 03', location: 'Highway Junction', status: 'online', vehicles: 678, uptime: '98.9%' },
+  { id: 'Camera 04', location: 'Business District', status: 'offline', vehicles: 0, uptime: '95.4%' },
+  { id: 'Camera 05', location: 'Shopping Area', status: 'online', vehicles: 345, uptime: '99.5%' },
+  { id: 'Camera 06', location: 'Park Avenue', status: 'online', vehicles: 189, uptime: '99.9%' },
 ];
 
 export function Cameras() {
@@ -38,7 +38,7 @@ export function Cameras() {
           setCvData(data);
           
           setDevices(prev => prev.map(d => {
-            if (d.id.includes('ESP32-001')) {
+            if (d.id.includes('Camera 01')) {
               return {
                 ...d,
                 vehicles: data.totals.Total || d.vehicles,
@@ -65,7 +65,7 @@ export function Cameras() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white">Camera Network</h3>
-          <p className="text-sm text-slate-500 dark:text-gray-400 mt-1">ESP32-CAM status</p>
+          <p className="text-sm text-slate-500 dark:text-gray-400 mt-1">Camera status</p>
         </div>
         <div className="flex items-center gap-3">
           {cvData && cvData.status === 'active' && (
@@ -113,7 +113,7 @@ export function Cameras() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {devices.map((device) => {
-          const isMainCV = device.id.includes('ESP32-001');
+          const isMainCV = device.id.includes('Camera 01');
           return (
             <div
               key={device.id}
