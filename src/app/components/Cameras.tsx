@@ -17,12 +17,12 @@ interface CVData {
 }
 
 const initialDevices = [
-  { id: 'Camera 01 (CV Main)', location: 'Main St & 5th Ave', status: 'online', vehicles: 0, uptime: '99.8%' },
-  { id: 'Camera 02', location: 'Downtown Core', status: 'online', vehicles: 456, uptime: '99.2%' },
-  { id: 'Camera 03', location: 'Highway Junction', status: 'online', vehicles: 678, uptime: '98.9%' },
-  { id: 'Camera 04', location: 'Business District', status: 'offline', vehicles: 0, uptime: '95.4%' },
-  { id: 'Camera 05', location: 'Shopping Area', status: 'online', vehicles: 345, uptime: '99.5%' },
-  { id: 'Camera 06', location: 'Park Avenue', status: 'online', vehicles: 189, uptime: '99.9%' },
+  { id: 'Camera 01 (CV Main)', location: 'Jl. MH. Thamrin (Aeon Mall)', status: 'online', vehicles: 0, uptime: '99.8%' },
+  { id: 'Camera 02', location: 'Jl. Sentul Boulevard', status: 'online', vehicles: 456, uptime: '99.2%' },
+  { id: 'Camera 03', location: 'Jl. Jungleland Boulevard', status: 'online', vehicles: 678, uptime: '98.9%' },
+  { id: 'Camera 04', location: 'Jl. Siliwangi (Golf Club)', status: 'offline', vehicles: 0, uptime: '95.4%' },
+  { id: 'Camera 05', location: 'Bundaran Sentul', status: 'online', vehicles: 345, uptime: '99.5%' },
+  { id: 'Camera 06', location: 'Jl. MH. Thamrin & Jl. Sentul Raya', status: 'online', vehicles: 189, uptime: '99.9%' },
 ];
 
 export function Cameras() {

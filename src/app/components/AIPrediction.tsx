@@ -1,15 +1,15 @@
 import { Brain, TrendingUp, Clock, MapPin } from 'lucide-react';
 
 const predictions = [
-  { time: '14:00-15:00', zone: 'Downtown Core', level: 'High', probability: 87, color: '#ef4444' },
-  { time: '15:00-16:00', zone: 'Highway Junction', level: 'Medium', probability: 64, color: '#eab308' },
-  { time: '16:00-17:00', zone: 'Business District', level: 'High', probability: 92, color: '#ef4444' },
+  { time: '14:00-15:00', zone: 'Jl. MH. Thamrin (Aeon Mall)', level: 'High', probability: 87, color: '#ef4444' },
+  { time: '15:00-16:00', zone: 'Jl. Jungleland Boulevard', level: 'Medium', probability: 64, color: '#eab308' },
+  { time: '16:00-17:00', zone: 'Jl. Sentul Boulevard', level: 'High', probability: 92, color: '#ef4444' },
 ];
 
 const routes = [
-  { route: 'Route A via Park St.', savings: '12 min', carbon: '-23%', status: 'recommended' },
-  { route: 'Route B via Highway 5', savings: '8 min', carbon: '-15%', status: 'alternative' },
-  { route: 'Route C via Main Ave.', savings: '5 min', carbon: '-8%', status: 'alternative' },
+  { route: 'Rute A via Jl. Siliwangi', savings: '12 min', carbon: '-23%', status: 'recommended' },
+  { route: 'Rute B via Tol Jagorawi (Sentul)', savings: '8 min', carbon: '-15%', status: 'alternative' },
+  { route: 'Rute C via Jl. Sentul Boulevard', savings: '5 min', carbon: '-8%', status: 'alternative' },
 ];
 
 export function AIPrediction() {
